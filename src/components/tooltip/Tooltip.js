@@ -2,8 +2,10 @@ import { useRecoilValue } from 'recoil';
 import { timeState } from '../../store/atoms';
 import './tooltip.css'
 
-function Tooltip () {
+function Tooltip (props) {
     const time = useRecoilValue(timeState);
+
+    const { isVisible } = props;
 
     const tooltip = document.querySelectorAll('.tooltip');
 
@@ -17,7 +19,7 @@ function Tooltip () {
     document.addEventListener('mousemove', trackMouseTooltip);
 
     return (
-        <div className="tooltip">
+        <div className={isVisible ? "tooltip tooltipVisible" : "tooltip"}>
             {time.toLocaleTimeString()}
         </div>
     )

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import Tooltip from '../tooltip/Tooltip';
 import { timeState } from '../../store/atoms';
@@ -6,6 +6,14 @@ import './clock.css';
 
 function Clock() {
   const [time, setTime] = useRecoilState(timeState);
+  const [isHovering, setIsHovering] = useState(false);
+  const handleMouseOver = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseOut = () => {
+    setIsHovering(false);
+  };
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -15,11 +23,16 @@ function Clock() {
     return () => {
       clearInterval(timerId)
     }
-  })
+  // eslint-disable-next-line
+  }, [])
 
   return (
     <>
-      <div className="clock">
+      <div 
+        className="clock"
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+      >
         <div
           className="hour_hand"
           style={{
@@ -51,7 +64,9 @@ function Clock() {
         <span className="ten">10</span>
         <span className="eleven">11</span>
       </div>
-      <Tooltip />
+      <Tooltip 
+        isVisible={isHovering}
+      />
     </>
 
   );
